@@ -3,757 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PC Controller Pro - Bilgisayarınızı Telefonunuzdan Kontrol Edin</title>
-    <meta name="description" content="PC Controller Pro ile bilgisayarınızı telefonunuzdan kontrol edin. Ses, medya, oyunlar ve dosyalar tek dokunuşla parmaklarınızın ucunda.">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <!-- AOS Animation -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        dark: '#0f172a',
-                        darker: '#0a1122',
-                        neon: '#00ddff',
-                        purple: '#bd00ff',
-                    },
-                    fontFamily: {
-                        outfit: ['Outfit', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <title>Musa | Sagnx.com</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* --- CSS Başlangıcı (AYNI KALDI) --- */
+        :root {
+            --bg-color: #0a0a0a; 
+            --text-color: #e0e0e0; 
+            --accent-color: #0000FF; 
+            --secondary-bg: #121212; 
+            --code-font: 'Fira Code', monospace;
+            --main-font: 'Montserrat', sans-serif;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-color); color: var(--text-color); font-family: var(--main-font); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: var(--text-color); transition: color 0.3s ease; }
+        a:hover { color: var(--accent-color); }
+        .btn { display: inline-block; padding: 10px 20px; background-color: transparent; border: 2px solid var(--accent-color); color: var(--accent-color); font-family: var(--code-font); font-weight: bold; border-radius: 4px; transition: all 0.3s ease; }
+        .btn:hover { background-color: var(--accent-color); color: var(--text-color); }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 60px 0; }
+        .section-title { font-family: var(--code-font); font-size: 1.5rem; color: var(--accent-color); margin-bottom: 40px; display: flex; align-items: center; }
+        .section-title::after { content: ""; display: block; width: 100%; height: 1px; background-color: #333; margin-left: 20px; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; position: fixed; width: 100%; top: 0; z-index: 100; background-color: rgba(10, 10, 10, 0.9); backdrop-filter: blur(10px); }
         
-        html {
-            scroll-behavior: smooth;
+        /* Logo boyutunu ayarlamak için burayı biraz büyüttüm */
+        .logo img {
+            height: 50px; /* Logonun yüksekliğini buradan ayarlayabilirsin */
+            width: auto;
         }
-        
-        body {
-            font-family: 'Outfit', sans-serif;
-            background-color: #0f172a;
-            color: #fff;
-            overflow-x: hidden;
-        }
-        
-        /* Gradient Text */
-        .gradient-text {
-            background: linear-gradient(135deg, #00ddff 0%, #bd00ff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        /* Gradient Border */
-        .gradient-border {
-            position: relative;
-            background: linear-gradient(135deg, #00ddff, #bd00ff);
-            padding: 2px;
-            border-radius: 12px;
-        }
-        
-        .gradient-border-inner {
-            background: #0f172a;
-            border-radius: 10px;
-            padding: 16px 32px;
-        }
-        
-        /* Glassmorphism Card */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .glass-card:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(0, 221, 255, 0.3);
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px -12px rgba(0, 221, 255, 0.15);
-        }
-        
-        /* Glow Button */
-        .glow-btn {
-            position: relative;
-            background: linear-gradient(135deg, #00ddff 0%, #0099cc 100%);
-            border: none;
-            border-radius: 12px;
-            padding: 16px 32px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            overflow: hidden;
-        }
-        
-        .glow-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s ease;
-        }
-        
-        .glow-btn:hover::before {
-            left: 100%;
-        }
-        
-        .glow-btn:hover {
-            box-shadow: 0 0 30px rgba(0, 221, 255, 0.5), 0 0 60px rgba(0, 221, 255, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        /* Outline Button */
-        .outline-btn {
-            position: relative;
-            background: transparent;
-            border: 2px solid rgba(189, 0, 255, 0.5);
-            border-radius: 12px;
-            padding: 14px 30px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .outline-btn:hover {
-            border-color: #bd00ff;
-            background: rgba(189, 0, 255, 0.1);
-            box-shadow: 0 0 30px rgba(189, 0, 255, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        /* Phone Mockup */
-        .phone-mockup {
-            position: relative;
-            width: 280px;
-            height: 560px;
-            background: linear-gradient(145deg, #1e293b, #0f172a);
-            border-radius: 40px;
-            padding: 12px;
-            box-shadow: 
-                0 50px 100px -20px rgba(0, 0, 0, 0.5),
-                0 0 0 1px rgba(255, 255, 255, 0.1),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-        }
-        
-        .phone-screen {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, #0f172a 0%, #1a1a2e 50%, #16213e 100%);
-            border-radius: 32px;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .phone-notch {
-            position: absolute;
-            top: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 28px;
-            background: #0a0a0a;
-            border-radius: 20px;
-        }
-        
-        .phone-content {
-            padding: 60px 20px 20px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-        }
-        
-        .phone-app-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #00ddff, #bd00ff);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            box-shadow: 0 10px 40px rgba(0, 221, 255, 0.3);
-        }
-        
-        .phone-control-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            width: 100%;
-        }
-        
-        .phone-control-btn {
-            aspect-ratio: 1;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        
-        .phone-control-btn.active {
-            background: linear-gradient(135deg, rgba(0, 221, 255, 0.2), rgba(189, 0, 255, 0.2));
-            border-color: rgba(0, 221, 255, 0.5);
-            color: #00ddff;
-        }
-        
-        /* Background Effects */
-        .bg-gradient-radial {
-            background: radial-gradient(ellipse at top, rgba(0, 221, 255, 0.1) 0%, transparent 50%),
-                        radial-gradient(ellipse at bottom right, rgba(189, 0, 255, 0.08) 0%, transparent 50%);
-        }
-        
-        .floating-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.5;
-            animation: float 8s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-30px) rotate(5deg); }
-        }
-        
-        /* Step Circle */
-        .step-circle {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, rgba(0, 221, 255, 0.1), rgba(189, 0, 255, 0.1));
-            border: 2px solid rgba(0, 221, 255, 0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            font-weight: 700;
-            color: #00ddff;
-            transition: all 0.3s ease;
-        }
-        
-        .step-card:hover .step-circle {
-            background: linear-gradient(135deg, #00ddff, #bd00ff);
-            color: #0f172a;
-            border-color: transparent;
-            box-shadow: 0 0 40px rgba(0, 221, 255, 0.4);
-        }
-        
-        /* Navbar */
-        .navbar {
-            backdrop-filter: blur(20px);
-            background: rgba(15, 23, 42, 0.8);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .nav-link {
-            position: relative;
-            color: rgba(255, 255, 255, 0.7);
-            transition: color 0.3s ease;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #00ddff, #bd00ff);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover {
-            color: #fff;
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        /* Mobile Menu */
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 80px;
-            left: 0;
-            right: 0;
-            background: rgba(15, 23, 42, 0.98);
-            backdrop-filter: blur(20px);
-            padding: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            z-index: 40;
-        }
-        
-        .mobile-menu.active {
-            display: block;
-        }
-        
-        /* Feature Icon */
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, rgba(0, 221, 255, 0.1), rgba(189, 0, 255, 0.1));
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-        }
-        
-        .glass-card:hover .feature-icon {
-            background: linear-gradient(135deg, #00ddff, #bd00ff);
-            box-shadow: 0 10px 30px rgba(0, 221, 255, 0.3);
-        }
-        
-        /* Scroll Indicator */
-        .scroll-indicator {
-            animation: bounce 2s infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
-        }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #0f172a;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #00ddff, #bd00ff);
-            border-radius: 4px;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .phone-mockup {
-                width: 220px;
-                height: 440px;
-            }
-            
-            .hero-content {
-                text-align: center;
-            }
-            
-            .hero-buttons {
-                flex-direction: column;
-                width: 100%;
-            }
-            
-            .hero-buttons a {
-                width: 100%;
-                justify-content: center;
-            }
-        }
+
+        nav ul { display: flex; list-style: none; }
+        nav ul li { margin-left: 30px; }
+        nav ul li a { font-family: var(--code-font); font-size: 0.9rem; }
+        .contact-btn { color: var(--accent-color) !important; }
+        #hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; padding: 0 10%; }
+        .hero-greeting { font-family: var(--code-font); color: var(--accent-color); font-size: 1.2rem; margin-bottom: 20px; }
+        .hero-title { font-size: 4rem; font-weight: 700; margin-bottom: 10px; }
+        .hero-subtitle { font-size: 2rem; color: #888; font-family: var(--code-font); margin-bottom: 40px; }
+        .cursor { display: inline-block; background-color: var(--accent-color); width: 10px; height: 2rem; margin-left: 5px; animation: blink 1s infinite; vertical-align: middle; }
+        @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+        #about p { font-size: 1.1rem; max-width: 800px; margin-bottom: 20px; }
+        .skills-grid { display: flex; flex-wrap: wrap; gap: 15px; }
+        .skill-tag { font-family: var(--code-font); background-color: var(--secondary-bg); padding: 10px 20px; border-radius: 4px; border: 1px solid #333; transition: border-color 0.3s ease; }
+        .skill-tag:hover { border-color: var(--accent-color); }
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .project-card { background-color: var(--secondary-bg); border-radius: 8px; overflow: hidden; border: 1px solid #333; transition: transform 0.3s ease, border-color 0.3s ease; }
+        .project-card:hover { transform: translateY(-5px); border-color: var(--accent-color); }
+        .project-image { width: 100%; height: 200px; object-fit: cover; background-color: #222; }
+        .project-content { padding: 25px; }
+        .project-title { font-family: var(--code-font); font-size: 1.3rem; margin-bottom: 15px; color: #fff; }
+        .project-description { font-size: 0.95rem; color: #aaa; margin-bottom: 20px; }
+        .project-tags { font-family: var(--code-font); font-size: 0.8rem; color: var(--accent-color); margin-bottom: 20px; }
+        .project-links a { margin-right: 15px; font-family: var(--code-font); font-size: 0.9rem; }
+        footer { background-color: var(--secondary-bg); padding: 80px 0; text-align: center; }
+        .footer-email { font-size: 2rem; font-weight: 700; margin: 40px 0; display: block; }
+        .footer-socials a { font-size: 1.5rem; margin: 0 15px; }
+        .footer-bottom { margin-top: 60px; font-family: var(--code-font); font-size: 0.8rem; color: #888; }
+        @media (max-width: 768px) { header { padding: 20px; } nav ul { display: none; } #hero { padding: 0 5%; } .hero-title { font-size: 3rem; } .hero-subtitle { font-size: 1.5rem; } }
+        /* --- CSS Bitişi --- */
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar fixed top-0 left-0 right-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <!-- Logo -->
-                <a href="#" class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-neon to-purple rounded-xl flex items-center justify-center">
-                        <i class="fas fa-gamepad text-dark text-lg"></i>
-                    </div>
-                    <span class="text-xl font-bold">PC Controller <span class="gradient-text">Pro</span></span>
-                </a>
-                
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center gap-8">
-                    <a href="#ozellikler" class="nav-link">Özellikler</a>
-                    <a href="#kurulum" class="nav-link">Kurulum</a>
-                    <a href="#iletisim" class="nav-link">İletişim</a>
-                    <a href="#" class="glow-btn text-dark text-sm flex items-center gap-2">
-                        <i class="fas fa-download"></i>
-                        Hemen İndir
-                    </a>
-                </div>
-                
-                <!-- Mobile Menu Button -->
-                <button class="md:hidden text-2xl" onclick="toggleMobileMenu()">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-        </div>
-        
-        <!-- Mobile Menu -->
-        <div id="mobileMenu" class="mobile-menu">
-            <div class="flex flex-col gap-4">
-                <a href="#ozellikler" class="text-lg py-2 border-b border-white/10" onclick="toggleMobileMenu()">Özellikler</a>
-                <a href="#kurulum" class="text-lg py-2 border-b border-white/10" onclick="toggleMobileMenu()">Kurulum</a>
-                <a href="#iletisim" class="text-lg py-2 border-b border-white/10" onclick="toggleMobileMenu()">İletişim</a>
-                <a href="#" class="glow-btn text-dark text-center mt-4">
-                    <i class="fas fa-download mr-2"></i>
-                    Hemen İndir
-                </a>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="min-h-screen pt-20 relative overflow-hidden bg-gradient-radial">
-        <!-- Background Orbs -->
-        <div class="floating-orb w-96 h-96 bg-neon/30 top-20 -left-48"></div>
-        <div class="floating-orb w-80 h-80 bg-purple/30 bottom-20 -right-40" style="animation-delay: -4s;"></div>
-        
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[calc(100vh-80px)] flex items-center">
-            <div class="grid lg:grid-cols-2 gap-12 items-center w-full py-12">
-                <!-- Left Content -->
-                <div class="hero-content" data-aos="fade-right" data-aos-duration="1000">
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-                        Bilgisayarınızın Kontrolü Artık 
-                        <span class="gradient-text">Cebinizde.</span>
-                    </h1>
-                    <p class="text-lg sm:text-xl text-gray-400 mb-10 leading-relaxed">
-                        Ses, Medya, Oyunlar ve Dosyalar... Hepsi tek dokunuşla parmaklarınızın ucunda. 
-                        <span class="text-white font-medium">Reklamsız</span> ve 
-                        <span class="gradient-text font-medium">Pro</span> seçenekleriyle.
-                    </p>
-                    
-                    <!-- Download Buttons -->
-                    <div class="hero-buttons flex flex-wrap gap-4">
-                        <a href="#" class="glow-btn text-dark flex items-center gap-3">
-                            <i class="fab fa-windows text-xl"></i>
-                            <div class="text-left">
-                                <div class="text-xs opacity-70">Windows Sunucusunu</div>
-                                <div class="font-bold">İndir (.exe)</div>
-                            </div>
-                        </a>
-                        <a href="#" class="outline-btn flex items-center gap-3">
-                            <i class="fab fa-android text-xl text-green-400"></i>
-                            <div class="text-left">
-                                <div class="text-xs opacity-70">Android Uygulamasını</div>
-                                <div class="font-bold">İndir (.apk)</div>
-                            </div>
-                        </a>
-                    </div>
-                    
-                    <!-- Stats -->
-                    <div class="flex flex-wrap gap-8 mt-12 pt-8 border-t border-white/10">
-                        <div>
-                            <div class="text-3xl font-bold gradient-text">100%</div>
-                            <div class="text-sm text-gray-500">Ücretsiz</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-bold gradient-text">0</div>
-                            <div class="text-sm text-gray-500">Reklam</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-bold gradient-text">∞</div>
-                            <div class="text-sm text-gray-500">Özellik</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Right - Phone Mockup -->
-                <div class="flex justify-center lg:justify-end" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
-                    <div class="phone-mockup">
-                        <div class="phone-screen">
-                            <div class="phone-notch"></div>
-                            <div class="phone-content">
-                                <div class="phone-app-icon">
-                                    <i class="fas fa-gamepad"></i>
-                                </div>
-                                <div class="text-center">
-                                    <div class="font-bold text-lg">PC Controller Pro</div>
-                                    <div class="text-xs text-gray-400">Bağlandı ✓</div>
-                                </div>
-                                <div class="phone-control-grid">
-                                    <div class="phone-control-btn"><i class="fas fa-volume-up"></i></div>
-                                    <div class="phone-control-btn active"><i class="fas fa-play"></i></div>
-                                    <div class="phone-control-btn"><i class="fas fa-volume-down"></i></div>
-                                    <div class="phone-control-btn"><i class="fas fa-backward"></i></div>
-                                    <div class="phone-control-btn active"><i class="fas fa-pause"></i></div>
-                                    <div class="phone-control-btn"><i class="fas fa-forward"></i></div>
-                                    <div class="phone-control-btn"><i class="fas fa-folder"></i></div>
-                                    <div class="phone-control-btn"><i class="fas fa-camera"></i></div>
-                                    <div class="phone-control-btn"><i class="fas fa-rocket"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Scroll Indicator -->
-        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 scroll-indicator">
-            <a href="#ozellikler" class="text-gray-500 hover:text-neon transition-colors">
-                <i class="fas fa-chevron-down text-2xl"></i>
-            </a>
-        </div>
-    </section>
+    <header>
+        <a href="#hero" class="logo">
+            <img src="assets/Sagnx_logo_png.png" alt="Sagnx Logo">
+        </a>
+        <nav>
+            <ul>
+                <li><a href="#about">// Hakkımda</a></li>
+                <li><a href="#skills">// Yetenekler</a></li>
+                <li><a href="#projects">// Projeler</a></li>
+                <li><a href="#footer" class="contact-btn">< İletişim /></a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <!-- Features Section -->
-    <section id="ozellikler" class="py-24 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Section Header -->
-            <div class="text-center mb-16" data-aos="fade-up">
-                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-                    Güçlü <span class="gradient-text">Özellikler</span>
-                </h2>
-                <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-                    PC Controller Pro ile bilgisayarınızı tamamen kontrol altına alın.
+    <main>
+        <section id="hero">
+            <p class="hero-greeting">> Merhaba, dünya.</p>
+            <h1 class="hero-title">Ben Musa.</h1>
+            <h2 class="hero-subtitle">
+                Mühendislik Öğrencisi & Geliştirici <span class="cursor"></span>
+            </h2>
+            <a href="#projects" class="btn">[ Projelerimi Gör > ]</a>
+        </section>
+
+        <div class="container">
+            <section id="about">
+                <h3 class="section-title">/* Hakkımda */</h3>
+                <p>
+                    Bilgisayar Mühendisliği öğrencisiyim. Karmaşık problemleri analiz edip temiz ve verimli kodlarla çözümler üretmeyi seviyorum.
                 </p>
-            </div>
-            
-            <!-- Features Grid -->
-            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Feature 1 -->
-                <div class="glass-card p-8" data-aos="fade-up" data-aos-delay="0">
-                    <div class="feature-icon">
-                        <span>🎵</span>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Soundboard</h3>
-                    <p class="text-gray-400">Yayıncılar ve troller için eğlenceli ses efektleri. Anında ses çalın!</p>
-                </div>
-                
-                <!-- Feature 2 -->
-                <div class="glass-card p-8" data-aos="fade-up" data-aos-delay="100">
-                    <div class="feature-icon">
-                        <span>📂</span>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Dosya Yöneticisi</h3>
-                    <p class="text-gray-400">PC dosyalarınıza uzaktan erişin ve telefonunuza indirin.</p>
-                </div>
-                
-                <!-- Feature 3 -->
-                <div class="glass-card p-8" data-aos="fade-up" data-aos-delay="200">
-                    <div class="feature-icon">
-                        <span>📸</span>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Ekran Görüntüsü</h3>
-                    <p class="text-gray-400">Bilgisayarınızın ekranını anlık olarak görün.</p>
-                </div>
-                
-                <!-- Feature 4 -->
-                <div class="glass-card p-8" data-aos="fade-up" data-aos-delay="300">
-                    <div class="feature-icon">
-                        <span>🚀</span>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Hızlı Başlatıcı</h3>
-                    <p class="text-gray-400">Oyunlarınızı ve uygulamalarınızı tek tıkla açın.</p>
-                </div>
-                
-                <!-- Feature 5 -->
-                <div class="glass-card p-8" data-aos="fade-up" data-aos-delay="400">
-                    <div class="feature-icon">
-                        <span>🛡️</span>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Güvenli Bağlantı</h3>
-                    <p class="text-gray-400">Yerel ağ üzerinden şifreli ve güvenli iletişim.</p>
-                </div>
-                
-                <!-- Feature 6 - Pro Badge -->
-                <div class="glass-card p-8 relative overflow-hidden" data-aos="fade-up" data-aos-delay="500">
-                    <div class="absolute top-4 right-4 px-3 py-1 bg-gradient-to-r from-neon to-purple rounded-full text-xs font-bold text-dark">
-                        PRO
-                    </div>
-                    <div class="feature-icon">
-                        <span>⚡</span>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Ve Daha Fazlası...</h3>
-                    <p class="text-gray-400">Sürekli güncellenen yeni özellikler ve iyileştirmeler.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works Section -->
-    <section id="kurulum" class="py-24 relative overflow-hidden">
-        <!-- Background -->
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-purple/5 to-transparent"></div>
-        
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-            <!-- Section Header -->
-            <div class="text-center mb-16" data-aos="fade-up">
-                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-                    Nasıl <span class="gradient-text">Çalışır?</span>
-                </h2>
-                <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-                    Sadece 3 adımda bilgisayarınızı kontrol etmeye başlayın.
+                <p>
+                    Şu anda backend teknolojileri ve sistem mimarileri üzerine odaklanıyorum. Sürekli öğrenmeye açık bir yapım var ve yeni teknolojileri kurcalamaktan keyif alıyorum.
                 </p>
-            </div>
-            
-            <!-- Steps -->
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Step 1 -->
-                <div class="step-card text-center" data-aos="fade-up" data-aos-delay="0">
-                    <div class="flex justify-center mb-6">
-                        <div class="step-circle">1</div>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Sunucuyu İndirin</h3>
-                    <p class="text-gray-400">PC Controller Pro sunucusunu bilgisayarınıza indirin ve çalıştırın.</p>
-                    <div class="mt-4">
-                        <i class="fab fa-windows text-4xl text-neon/50"></i>
-                    </div>
-                </div>
-                
-                <!-- Step 2 -->
-                <div class="step-card text-center" data-aos="fade-up" data-aos-delay="200">
-                    <div class="flex justify-center mb-6">
-                        <div class="step-circle">2</div>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">QR Kodu Okutun</h3>
-                    <p class="text-gray-400">Telefon uygulamasını açın ve bilgisayardaki QR kodu taratın.</p>
-                    <div class="mt-4">
-                        <i class="fas fa-qrcode text-4xl text-purple/50"></i>
-                    </div>
-                </div>
-                
-                <!-- Step 3 -->
-                <div class="step-card text-center" data-aos="fade-up" data-aos-delay="400">
-                    <div class="flex justify-center mb-6">
-                        <div class="step-circle">3</div>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Kontrole Başlayın!</h3>
-                    <p class="text-gray-400">Tam kontrolün keyfini çıkarın. Hepsi bu kadar basit!</p>
-                    <div class="mt-4">
-                        <i class="fas fa-check-circle text-4xl text-green-500/50"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- CTA -->
-            <div class="text-center mt-16" data-aos="fade-up" data-aos-delay="600">
-                <a href="#" class="glow-btn text-dark inline-flex items-center gap-3 text-lg px-10 py-5">
-                    <i class="fas fa-download"></i>
-                    Hemen Başla
-                </a>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <!-- Contact/Footer Section -->
-    <footer id="iletisim" class="py-16 border-t border-white/5">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-3 gap-12 mb-12">
-                <!-- Brand -->
-                <div>
-                    <a href="#" class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 bg-gradient-to-br from-neon to-purple rounded-xl flex items-center justify-center">
-                            <i class="fas fa-gamepad text-dark text-lg"></i>
+            <section id="skills">
+                <h3 class="section-title">< Kullandığım Teknolojiler /></h3>
+                <div class="skills-grid">
+                    <div class="skill-tag">[< Python >]</div>
+                    <div class="skill-tag">[< Java >]</div>
+                    <div class="skill-tag">[< C++ >]</div>
+                    <div class="skill-tag">[< JavaScript >]</div>
+                    <div class="skill-tag">[< Git >]</div>
+                </div>
+            </section>
+
+            <section id="projects">
+                <h3 class="section-title">// > feature/projects</h3>
+                <div class="project-grid">
+                    
+                    <div class="project-card">
+                        <img src="assets/ss1.png" alt="PomoTimer Projesi" class="project-image">
+                        <div class="project-content">
+                            <h4 class="project-title">< PomoTimer ></h4>
+                            <p class="project-description">Bu projem klasik bir pomodoro uygulamasıdır. Pomodoroyu kendimce yorumladım ve böyle bir proje ortaya çıkmış oldu.</p>
+                            <p class="project-tags">JavaScript Expo</p>
+                            <div class="project-links">
+                                <a href="BURAYA_PROJE_GITHUB_LINKI" target="_blank">[< Kodu İncele >]</a>
+                            </div>
                         </div>
-                        <span class="text-xl font-bold">PC Controller <span class="gradient-text">Pro</span></span>
-                    </a>
-                    <p class="text-gray-400 text-sm">
-                        Bilgisayarınızı telefonunuzdan kontrol etmenin en kolay yolu.
-                    </p>
-                </div>
-                
-                <!-- Quick Links -->
-                <div>
-                    <h4 class="font-bold mb-4">Hızlı Bağlantılar</h4>
-                    <ul class="space-y-2 text-gray-400">
-                        <li><a href="#ozellikler" class="hover:text-neon transition-colors">Özellikler</a></li>
-                        <li><a href="#kurulum" class="hover:text-neon transition-colors">Kurulum</a></li>
-                        <li><a href="#" class="hover:text-neon transition-colors">İndir</a></li>
-                    </ul>
-                </div>
-                
-                <!-- Social -->
-                <div>
-                    <h4 class="font-bold mb-4">Bizi Takip Edin</h4>
-                    <div class="flex gap-4">
-                        <a href="#" class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-white/10 transition-colors">
-                            <i class="fab fa-github text-xl"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-white/10 transition-colors">
-                            <i class="fab fa-twitter text-xl"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center hover:bg-white/10 transition-colors">
-                            <i class="fab fa-discord text-xl"></i>
-                        </a>
                     </div>
+
+                    <div class="project-card">
+                        <img src="assets/icon.png" alt="Blood&Choice Projesi" class="project-image">
+                        <div class="project-content">
+                            <h4 class="project-title">< Blood&Choice ></h4>
+                            <p class="project-description">Unity ile yapılmış bir 2D bir oyun. İlk oyun geliştirme projem.</p>
+                            <p class="project-tags">Unity</p>
+                            <div class="project-links">
+                                <a href="BURAYA_PROJE_GITHUB_LINKI" target="_blank">[< Kodu İncele >]</a>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-            </div>
+            </section>
+        </div>
+    </main>
+
+    <footer id="footer">
+        <div class="container">
+            <h3 class="section-title" style="justify-content: center;">>_ İletişime Geçin</h3>
+            <p>Yeni fırsatlara ve işbirliklerine açığım. Bir fikriniz mi var? Konuşalım.</p>
             
-            <!-- Bottom -->
-            <div class="pt-8 border-t border-white/5 text-center text-gray-500 text-sm">
-                <p>PC Controller Pro © 2025 - Tüm Hakları Saklıdır.</p>
+            <a href="mailto:musagun@sagnx.com" class="footer-email">musagun@sagnx.com</a>
+            
+            <div class="footer-socials">
+                <a href="https://github.com/musagunn" target="_blank">[GitHub]</a>
+                <a href="https://www.linkedin.com/in/musa-g%C3%BCn-217a00361/" target="_blank">[LinkedIn]</a>
             </div>
+
+            <p class="footer-bottom">
+                © 2025 sagnx.com | < Designed with code />
+            </p>
         </div>
     </footer>
 
-    <!-- AOS Animation Script -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script>
-        // Initialize AOS
-        AOS.init({
-            once: true,
-            duration: 800,
-            easing: 'ease-out-cubic'
-        });
-        
-        // Mobile Menu Toggle
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('active');
-        }
-        
-        // Navbar scroll effect
-        window.addEventListener('scroll', () => {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.style.background = 'rgba(15, 23, 42, 0.95)';
-            } else {
-                navbar.style.background = 'rgba(15, 23, 42, 0.8)';
-            }
-        });
-        
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    </script>
 </body>
 </html>
-
